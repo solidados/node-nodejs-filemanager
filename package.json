@@ -1,0 +1,13 @@
+{
+  "name": "nodejs-filemanager",
+  "version": "2.0.0",
+  "description": "File Manager CLI implemented by using pure Node.js APIs > Node.js version 22.x.x (used ^22.9.0)",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src"
+  },
+  "keywords": ["cli", "filemanager", "nodejs"],
+  "author": "solidados",
+  "license": "ISC"
+}
