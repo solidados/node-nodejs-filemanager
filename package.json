@@ -2,12 +2,19 @@
   "name": "nodejs-filemanager",
   "version": "2.0.0",
   "description": "File Manager CLI implemented by using pure Node.js APIs > Node.js version 22.x.x (used ^22.9.0)",
-  "main": "src/index.js",
+  "main": "index.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "type": "module",
   "scripts": {
-    "start": "node src"
+    "start": "node index.js"
   },
   "keywords": ["cli", "filemanager", "nodejs"],
   "author": "solidados",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/solidados/node-nodejs-filemanager/issues"
+  },
+  "homepage": "https://github.com/solidados/node-nodejs-filemanager#readme"
 }
