@@ -11,7 +11,7 @@ const readlineListener = () => {
     const commandToExecute = commands[command];
 
     if (commandToExecute) {
-      commandToExecute(...args);
+      await commandToExecute(...args);
     } else if (command === ".exit") {
       messages.goodbye(constants.username);
       rl.close();
