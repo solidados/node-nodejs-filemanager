@@ -8,7 +8,7 @@ const messages = {
   greeting: (username) =>
     console.log(`${EOL}Welcome to the File Manager, ${username}!`),
   invalid: () => console.log(`Invalid command${EOL}`),
-  location: (dir) => console.log(`You are currently in ${dir}${EOL}`),
+  location: (dir) => console.log(`You are currently in ${dir}`),
 };
 
 export default messages;

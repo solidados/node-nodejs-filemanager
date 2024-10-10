@@ -1,11 +1,10 @@
-import * as constants from "node:constants";
+import { constants } from "../constants/index.js";
 import rl from "./readline.interface.js";
 import commands from "../interface/commands.js";
 import { messages } from "../helpers/index.js";
 
 const readlineListener = () => {
   const originalPrompt = rl.getPrompt();
-  console.log(originalPrompt);
 
   rl.on("line", async (data) => {
     const [command, ...args] = data.split(" ");

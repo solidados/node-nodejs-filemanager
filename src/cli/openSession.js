@@ -5,9 +5,9 @@ const openSession = () => {
   const HOME = constants.homedir;
   const args = process.argv.slice(2);
 
-  args || args.join("").startsWith("--username=")
-    ? (constants.username = args.join("").split("=")[1])
-    : constants.username;
+  if (args.length > 0 && args[0].startsWith("--username=")) {
+    constants.username = args[0].split("=")[1];
+  }
 
   messages.greeting(constants.username);
   messages.location(HOME);
