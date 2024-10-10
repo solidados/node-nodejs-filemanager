@@ -1,2 +1,2 @@
 export * from "./pathsHelper.js";
-export messages from "./messages.js";
+export { default as messages } from "./messages.js";
