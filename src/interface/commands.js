@@ -1,7 +1,11 @@
-import { homedir } from "node:os";
+import { homedir as getHomeDir } from "node:os";
+import { cd } from "../commands/index.js";
 
-let currentDir = homedir();
+let currentDir = getHomeDir();
 
-const commands = {};
+const commands = {
+  up: async () => (currentDir = await cd("..")),
+  cd: async (dir) => (currentDir = await cd(dir)),
+};
 
 export default commands;
