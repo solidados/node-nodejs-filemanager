@@ -10,14 +10,19 @@ const readlineListener = () => {
     const [command, ...args] = data.split(" ");
     const commandToExecute = commands[command];
 
-    if (commandToExecute) {
-      await commandToExecute(...args);
-    } else if (command === ".exit") {
+    if (command === ".exit") {
       messages.goodbye(constants.username);
       rl.close();
+      return;
+    }
+
+    if (commandToExecute) {
+      await commandToExecute(...args);
     } else {
       messages.invalid();
     }
+
+    rl.prompt();
   });
 
   rl.on("SIGINT", () => {
