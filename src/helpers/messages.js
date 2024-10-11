@@ -2,7 +2,7 @@ import { EOL } from "node:os";
 
 const messages = {
   failed: (msg) => console.log(`Operation failed${msg}${EOL}`),
-  fileCreated: () => console.log(`File created successfully${EOL}`),
+  fileCreated: (file) => console.log(`File ${file} created successfully${EOL}`),
   fileExist: () => console.log(`File already exist${EOL}`),
   goodbye: (username) =>
     console.log(
