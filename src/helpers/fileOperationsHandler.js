@@ -2,31 +2,38 @@ import { readFile, stat } from "node:fs/promises";
 import { parse } from "node:path";
 import { __absolute, isPathExist, messages } from "./index.js";
 
-const fileOperations = async (dir, filePath, file, operation) => {
+const validatePaths = async (srcPath, destPath) => {
+  const srcExists = await isPathExist(srcPath);
+  const destExists = await isPathExist(destPath);
+
+  if (!srcExists || !destExists) {
+    messages.invalidInput();
+    return false;
+  }
+  return true;
+};
+
+const processFile = async (srcPath, destPath, operation) => {
+  const stats = await stat(srcPath);
+  if (!stats.isFile()) {
+    return messages.invalidInput();
+  }
+
+  const data = await readFile(srcPath);
+  await operation(destPath, data);
+  messages.fileProcessed();
+};
+
+const fileOperations = async (dir, filePath, destFile, operation) => {
   try {
-    if (!filePath || !file) {
-      messages.invalidInput();
-      return dir;
-    }
+    const fullSrcPath = __absolute(dir, filePath);
+    const fullDestPath = __absolute(dir, destFile, parse(filePath).base);
 
-    let fileWithExtension = parse(filePath).base;
-    const pathToSrcFileExist = await isPathExist(dir, filePath);
-    const pathToDestFileExist = await isPathExist(dir, file);
+    const pathsValid = await validatePaths(fullSrcPath, fullDestPath);
+    if (!pathsValid) return;
 
-    if (!pathToSrcFileExist || !pathToDestFileExist) {
-      messages.invalidInput();
-      return dir;
-    } else {
-      const stats = await stat(__absolute(dir, filePath));
-      if (stats.isFile()) {
-        const data = await readFile(__absolute(dir, filePath));
-        await operation(__absolute(dir, file, fileWithExtension), data);
-        messages.location(dir);
-      } else {
-        messages.invalidInput();
-        return dir;
-      }
-    }
+    await processFile(fullSrcPath, fullDestPath, operation);
+    messages.location(dir);
   } catch (error) {
     messages.failed(error.message);
   }
