@@ -1,5 +1,5 @@
 import { homedir as getHomeDir } from "node:os";
-import { cat, cd, ls } from "../commands/index.js";
+import { add, cat, cd, ls } from "../commands/index.js";
 
 let currentDir = getHomeDir();
 
@@ -10,6 +10,8 @@ const commands = {
     await ls(currentDir).catch((err) => console.error(err.message)),
   cat: async (file) =>
     cat(currentDir, file).catch((err) => console.error(err.message)),
+  add: async (file) =>
+    add(currentDir, file).catch((err) => console.error(err.message)),
 };
 
 export default commands;
