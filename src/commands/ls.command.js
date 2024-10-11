@@ -8,7 +8,6 @@ const ls = async (dir) => {
     const statPromises = contents.map(async (content) => {
       try {
         const stats = await stat(join(dir, content));
-        // const type = stats.isDirectory() ? "🅕🅞🅛🅓🅔🅡" : "🅵🅸🅻🅴";
         const type = stats.isDirectory() ? "folder" : "file";
         const formattedMtime = new Date(stats.mtime).toLocaleString();
         return {
