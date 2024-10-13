@@ -1,5 +1,5 @@
 import { createReadStream, createWriteStream } from "node:fs";
-import { fileOperationsHandler } from "../helpers/index.js";
+import { fileOperationsHandler, messages } from "../helpers/index.js";
 
 const copyFile = (srcPath, destPath) => {
   return new Promise((resolve, reject) => {
@@ -8,9 +8,16 @@ const copyFile = (srcPath, destPath) => {
 
     readable.pipe(writable);
 
-    writable.on("finish", resolve);
-    writable.on("error", reject);
-    readable.on("error", reject);
+    writable.on("close", resolve);
+    writable.on("error", (error) => {
+      readable.destroy();
+      reject(messages.failed(error.message));
+    });
+
+    readable.on("error", (error) => {
+      writable.destroy();
+      reject(messages.failed(error.message));
+    });
   });
 };
 

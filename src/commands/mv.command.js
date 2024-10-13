@@ -9,7 +9,7 @@ const moveFile = (srcPath, destPath) => {
 
     readable.pipe(writable);
 
-    writable.on("finish", async () => {
+    writable.on("close", async () => {
       try {
         await unlink(srcPath);
         resolve();
@@ -20,13 +20,12 @@ const moveFile = (srcPath, destPath) => {
 
     writable.on("error", (error) => {
       readable.destroy();
-      writable.destroy();
-      reject(error.message);
+      reject(messages.failed(error.message));
     });
+
     readable.on("error", (error) => {
-      readable.destroy();
       writable.destroy();
-      reject(error.message);
+      reject(messages.failed(error.message));
     });
   });
 };
