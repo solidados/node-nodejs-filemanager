@@ -1,42 +1,63 @@
-import { readFile, stat } from "node:fs/promises";
-import { parse } from "node:path";
+import { stat } from "node:fs/promises";
+import { parse, join } from "node:path";
 import { __absolute, isPathExist, messages } from "./index.js";
 
-const validatePaths = async (srcPath, destPath) => {
+const validatePaths = async (srcPath, destDir) => {
   const srcExists = await isPathExist(srcPath);
-  const destExists = await isPathExist(destPath);
-
-  if (!srcExists || !destExists) {
-    messages.invalidInput();
+  if (!srcExists) {
+    messages.failed(`Source file ${srcPath} does not exist.`);
     return false;
   }
+
+  const destExists = await isPathExist(destDir);
+  if (!destExists) {
+    messages.failed(`Destination directory ${destDir} does not exist.`);
+    return false;
+  }
+
+  const stats = await stat(destDir);
+  if (!stats.isDirectory()) {
+    messages.failed(`${destDir} is not a directory`);
+    return false;
+  }
+
   return true;
 };
 
-const processFile = async (srcPath, destPath, operation) => {
-  const stats = await stat(srcPath);
-  if (!stats.isFile()) {
-    return messages.invalidInput();
-  }
+const processFile = async (srcPath, destDir, operation) => {
+  const { base: fileName } = parse(srcPath);
+  const destPath = join(destDir, fileName);
 
-  const data = await readFile(srcPath);
-  await operation(destPath, data);
-  messages.fileProcessed();
+  try {
+    await operation(srcPath, destPath);
+    messages.fileProcessed(operation.name || "Operation", fileName);
+  } catch (error) {
+    messages.failed(`Failed to copy file: ${error.message}`);
+  }
 };
 
-const fileOperations = async (dir, filePath, destFile, operation) => {
+const fileOperationsHandler = async (
+  dir,
+  filePath,
+  destDir,
+  operation,
+  { validateDest = true } = {},
+) => {
   try {
     const fullSrcPath = __absolute(dir, filePath);
-    const fullDestPath = __absolute(dir, destFile, parse(filePath).base);
+    const fullDestDir = __absolute(dir, destDir);
 
-    const pathsValid = await validatePaths(fullSrcPath, fullDestPath);
-    if (!pathsValid) return;
+    if (validateDest) {
+      const pathsValid = await validatePaths(fullSrcPath, fullDestDir);
+      if (!pathsValid) return;
+    }
 
-    await processFile(fullSrcPath, fullDestPath, operation);
+    await processFile(fullSrcPath, fullDestDir, operation);
+
     messages.location(dir);
   } catch (error) {
     messages.failed(error.message);
   }
 };
 
-export default fileOperations;
+export default fileOperationsHandler;

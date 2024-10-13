@@ -1,5 +1,5 @@
 import { homedir as getHomeDir } from "node:os";
-import { add, cat, cd, ls, rn } from "../commands/index.js";
+import { add, cat, cd, cp, ls, rn } from "../commands/index.js";
 
 let currentDir = getHomeDir();
 
@@ -14,6 +14,10 @@ const commands = {
     add(currentDir, file).catch((err) => console.error(err.message)),
   rn: async (filePath, newFileName) =>
     await rn(currentDir, filePath, newFileName).catch((err) =>
+      console.error(err.message),
+    ),
+  cp: async (filePath, file) =>
+    await cp(currentDir, filePath, file).catch((err) =>
       console.error(err.message),
     ),
 };
