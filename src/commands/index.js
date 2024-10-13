@@ -6,3 +6,4 @@ export { default as rn } from "./rn.command.js";
 export { default as cp } from "./cp.command.js";
 export { default as mv } from "./mv.command.js";
 export { default as rmCommand } from "./rm.command.js";
+export { default as osInfo } from "./os.commands.js";

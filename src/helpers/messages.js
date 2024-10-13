@@ -19,6 +19,7 @@ const messages = {
   rewrite: (fileName) =>
     `File ${fileName} already exists. Would you like to re-write it? (y/N): `,
   unable: () => console.log(`Unable to perform command${EOL}`),
+  userOutput: (option) => console.log(`${option}`),
 };
 
 export default messages;

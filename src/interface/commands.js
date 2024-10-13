@@ -1,5 +1,15 @@
 import { homedir as getHomeDir } from "node:os";
-import { add, cat, cd, cp, ls, mv, rmCommand, rn } from "../commands/index.js";
+import {
+  add,
+  cat,
+  cd,
+  cp,
+  osInfo,
+  ls,
+  mv,
+  rmCommand,
+  rn,
+} from "../commands/index.js";
 
 let currentDir = getHomeDir();
 
@@ -28,6 +38,8 @@ const commands = {
     await rmCommand(currentDir, filePath).catch((err) =>
       console.error(err.message),
     ),
+  os: async (file) =>
+    osInfo(currentDir, file).catch((err) => console.error(err.message)),
 };
 
 export default commands;
