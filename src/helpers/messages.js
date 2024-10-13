@@ -16,6 +16,8 @@ const messages = {
   invalid: () => console.log(`Invalid command${EOL}`),
   invalidInput: () => console.log(`Invalid input${EOL}`),
   location: (dir) => console.log(`You are currently in ${dir}`),
+  rewrite: (fileName) =>
+    `File ${fileName} already exists. Would you like to re-write it? (y/N): `,
   unable: () => console.log(`Unable to perform command${EOL}`),
 };
 
