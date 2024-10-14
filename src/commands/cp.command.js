@@ -1,5 +1,9 @@
 import { createReadStream, createWriteStream } from "node:fs";
-import { fileOperationsHandler, messages } from "../helpers/index.js";
+import {
+  fileOperationsHandler,
+  messages,
+  pathParser,
+} from "../helpers/index.js";
 
 const copyFile = (srcPath, destPath) => {
   return new Promise((resolve, reject) => {
@@ -23,7 +27,18 @@ const copyFile = (srcPath, destPath) => {
 
 const cp = async (dir, filePath, destDir) => {
   try {
-    await fileOperationsHandler(dir, filePath, destDir, copyFile);
+    const [parsedDir] = pathParser(dir);
+    const [parsedFilePath] = pathParser(filePath);
+    const [parsedDestDir] = pathParser(destDir);
+
+    if (!parsedFilePath || !parsedDestDir) return messages.invalidInput();
+
+    await fileOperationsHandler(
+      parsedDir,
+      parsedFilePath,
+      parsedDestDir,
+      copyFile,
+    );
   } catch (error) {
     console.error("Error copying file:", error.message);
   }
