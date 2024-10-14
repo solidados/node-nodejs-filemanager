@@ -3,14 +3,23 @@ import { stat } from "node:fs/promises";
 import { parse } from "node:path";
 import { pipeline } from "node:stream/promises";
 import { createBrotliCompress } from "node:zlib";
-import { __absolute, isPathExist, messages } from "../helpers/index.js";
+import {
+  __absolute,
+  isPathExist,
+  messages,
+  pathParser,
+} from "../helpers/index.js";
 
 const compress = async (dir, filePath, destPath) => {
   try {
-    if (!filePath || !destPath) return messages.invalidInput();
+    const [parsedDir] = pathParser(dir);
+    const [parsedFilePath] = pathParser(filePath);
+    const [parsedDestPath] = pathParser(destPath);
 
-    const source = __absolute(dir, filePath);
-    const target = __absolute(dir, destPath);
+    if (!parsedFilePath || !parsedDestPath) return messages.invalidInput();
+
+    const source = __absolute(parsedDir, parsedFilePath);
+    const target = __absolute(parsedDir, parsedDestPath);
     const fileWithExt = parse(source).base;
     const compressedFile = `${target}.zip.br`;
 
@@ -32,10 +41,10 @@ const compress = async (dir, filePath, destPath) => {
     ).toFixed(2);
 
     messages.fileProcessed(
-      `Compressed (Ratio: ${compressionRatio}%)`,
+      `Compress (Ratio: ${compressionRatio}%)`,
       fileWithExt,
     );
-    messages.location(dir);
+    messages.location(parsedDir);
   } catch (error) {
     messages.failed(error.message);
   }
