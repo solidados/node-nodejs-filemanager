@@ -10,6 +10,7 @@ import {
   mv,
   rmCommand,
   rn,
+  compress,
 } from "../commands/index.js";
 
 let currentDir = getHomeDir();
@@ -43,6 +44,10 @@ const commands = {
     osInfo(currentDir, file).catch((err) => console.error(err.message)),
   hash: async (file) =>
     hash(currentDir, file).catch((err) => console.error(err.message)),
+  compress: async (filePath, destPath) =>
+    compress(currentDir, filePath, destPath).catch((err) =>
+      console.error(err.message),
+    ),
 };
 
 export default commands;
