@@ -19,7 +19,7 @@ const rmCommand = async (dir, filePath) => {
   try {
     const fullPath = join(dir, filePath);
     await removeRecursively(fullPath);
-    messages.fileProcessed("Deleted", filePath);
+    messages.fileProcessed("Delete", filePath);
   } catch (error) {
     messages.failed(error.message);
   }

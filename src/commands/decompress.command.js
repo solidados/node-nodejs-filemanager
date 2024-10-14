@@ -20,7 +20,7 @@ const decompress = async (dir, filePath, destPath) => {
 
     await pipeline(readStream, brotli, writeStream);
 
-    messages.fileProcessed("Decompressed", fileWithExt);
+    messages.fileProcessed("Decompress", fileWithExt);
     messages.location(dir);
   } catch (error) {
     console.error(error.message);

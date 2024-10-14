@@ -11,7 +11,7 @@ const osOptions = {
 };
 
 function getEOL() {
-  messages.userOutput(EOL);
+  messages.userOutput(JSON.stringify(EOL));
 }
 
 function getCPUS() {

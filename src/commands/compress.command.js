@@ -12,7 +12,7 @@ const compress = async (dir, filePath, destPath) => {
     const source = __absolute(dir, filePath);
     const target = __absolute(dir, destPath);
     const fileWithExt = parse(source).base;
-    const compressedFile = `${target}_zip.br`;
+    const compressedFile = `${target}.zip.br`;
 
     if (!(await isPathExist(source))) return messages.invalidInput();
 

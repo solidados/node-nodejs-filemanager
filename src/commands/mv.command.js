@@ -33,7 +33,7 @@ const moveFile = (srcPath, destPath) => {
 const mv = async (dir, filePath, destDir) => {
   try {
     await fileOperationsHandler(dir, filePath, destDir, moveFile, {
-      operationName: "Moved",
+      operationName: "Move",
     });
   } catch (error) {
     messages.failed(error.message);
