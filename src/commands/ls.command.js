@@ -1,13 +1,15 @@
 import { readdir, stat } from "node:fs/promises";
 import { join } from "node:path";
-import { formatSize, messages } from "../helpers/index.js";
+import { formatSize, messages, pathParser } from "../helpers/index.js";
 
 const ls = async (dir) => {
+  const [parsedDir] = pathParser(dir);
+
   try {
-    const contents = await readdir(dir);
+    const contents = await readdir(parsedDir);
     const statPromises = contents.map(async (content) => {
       try {
-        const stats = await stat(join(dir, content));
+        const stats = await stat(join(parsedDir, content));
         const type = stats.isDirectory() ? "folder" : "file";
         const formattedMtime = new Date(stats.mtime).toLocaleString();
         return {
@@ -31,7 +33,7 @@ const ls = async (dir) => {
     });
 
     console.table(sortedContent, ["type", "name", "size", "last modified"]);
-    messages.location(dir);
+    messages.location(parsedDir);
   } catch (error) {
     messages.failed();
   }
