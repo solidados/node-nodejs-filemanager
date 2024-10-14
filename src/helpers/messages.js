@@ -38,6 +38,7 @@ const messages = {
     console.log(`${EOL}You are currently in ${formatPathColor(dir)}`),
   rewrite: (fileName) =>
     `${formatPathColor(fileName)} ${formatWarningColor(`already exists. Would you like to re-write it? (y/N): `)}`,
+  success: (text) => console.log(formatSuccessColor(text)),
   unable: () =>
     console.log(formatWarningColor(`Unable to perform command`), EOL),
   userOutput: (option) => console.log(formatSuccessColor(option)),
