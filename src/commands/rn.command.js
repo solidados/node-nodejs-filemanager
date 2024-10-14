@@ -1,13 +1,18 @@
 import { rename } from "node:fs/promises";
 import { parse } from "node:path";
-import { __absolute, isPathExist, messages } from "../helpers/index.js";
+import {
+  __absolute,
+  isPathExist,
+  messages,
+  pathParser,
+} from "../helpers/index.js";
 
 const rn = async (dir, filePath, newFileName) => {
   if (!filePath || !newFileName) {
     return messages.invalidInput();
   }
-
-  const { dir: fileDir, base: oldFileName } = parse(filePath);
+  const [parsedFilePath] = pathParser(filePath);
+  const { dir: fileDir, base: oldFileName } = parse(parsedFilePath);
   const absoluteOldPath = __absolute(dir, fileDir, oldFileName);
   const absoluteNewPath = __absolute(dir, fileDir, newFileName);
 
