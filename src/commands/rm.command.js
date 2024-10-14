@@ -1,6 +1,6 @@
 import { rm, readdir, stat } from "node:fs/promises";
 import { join } from "node:path";
-import { messages } from "../helpers/index.js";
+import { messages, pathParser } from "../helpers/index.js";
 
 const removeRecursively = async (path) => {
   const pathStats = await stat(path);
@@ -16,10 +16,13 @@ const removeRecursively = async (path) => {
 };
 
 const rmCommand = async (dir, filePath) => {
+  const [parsedDir] = pathParser(dir);
+  const [parsedFilePath] = pathParser(filePath);
+
   try {
-    const fullPath = join(dir, filePath);
+    const fullPath = join(parsedDir, parsedFilePath);
     await removeRecursively(fullPath);
-    messages.fileProcessed("Delete", filePath);
+    messages.fileProcessed("Delete", parsedFilePath);
   } catch (error) {
     messages.failed(error.message);
   }
