@@ -1,6 +1,10 @@
 import { createReadStream, createWriteStream } from "node:fs";
 import { unlink } from "node:fs/promises";
-import { fileOperationsHandler, messages } from "../helpers/index.js";
+import {
+  fileOperationsHandler,
+  messages,
+  pathParser,
+} from "../helpers/index.js";
 
 const moveFile = (srcPath, destPath) => {
   return new Promise((resolve, reject) => {
@@ -31,10 +35,19 @@ const moveFile = (srcPath, destPath) => {
 };
 
 const mv = async (dir, filePath, destDir) => {
+  const [parsedDir] = pathParser(dir);
+  const [parsedFilePath] = pathParser(filePath);
+  const [parsedDestDir] = pathParser(destDir);
   try {
-    await fileOperationsHandler(dir, filePath, destDir, moveFile, {
-      operationName: "Move",
-    });
+    await fileOperationsHandler(
+      parsedDir,
+      parsedFilePath,
+      parsedDestDir,
+      moveFile,
+      {
+        operationName: "Move",
+      },
+    );
   } catch (error) {
     messages.failed(error.message);
   }
