@@ -1,55 +1,7 @@
-import { stat } from "node:fs/promises";
 import { parse, join } from "node:path";
-import { __absolute, isPathExist, messages } from "./index.js";
-import { rl } from "../cli/index.js";
-
-const askUser = (question) => {
-  return new Promise((resolve) => {
-    rl.question(question, (answer) => {
-      resolve(answer.trim());
-    });
-  });
-};
-
-const confirmOverwrite = async (destPath, fileName) => {
-  const fileExists = await isPathExist(destPath);
-  if (fileExists) {
-    rl.pause();
-    const answer = await askUser(messages.rewrite(fileName));
-    rl.resume();
-    if (answer.toLowerCase() === "y") {
-      return true;
-    } else if (answer.toLowerCase() === "n") {
-      return false;
-    } else {
-      messages.failed("Invalid input. Please enter 'y' or 'n'.");
-      return await confirmOverwrite(destPath, fileName);
-    }
-  }
-  return true;
-};
-
-const validatePaths = async (srcPath, destDir) => {
-  const srcExists = await isPathExist(srcPath);
-  if (!srcExists) {
-    messages.failed(`Source file ${srcPath} does not exist.`);
-    return false;
-  }
-
-  const destExists = await isPathExist(destDir);
-  if (!destExists) {
-    messages.failed(`Destination directory ${destDir} does not exist.`);
-    return false;
-  }
-
-  const stats = await stat(destDir);
-  if (!stats.isDirectory()) {
-    messages.failed(`${destDir} is not a directory`);
-    return false;
-  }
-
-  return true;
-};
+import { __absolute, formatPathColor, messages } from "./index.js";
+import { validatePaths } from "./validatePaths.js";
+import { confirmOverwrite } from "./confirmOverwrite.js";
 
 const fileOperationsHandler = async (
   dir,
@@ -71,7 +23,10 @@ const fileOperationsHandler = async (
 
     const overwrite = await confirmOverwrite(fullDestPath, fileName);
     if (!overwrite) {
-      console.log(`Operation cancelled. ${fileName} was not overwritten`);
+      console.log(
+        `Operation cancelled. ${formatPathColor(fileName)} was not overwritten`,
+      );
+      messages.location(dir);
       return;
     }
 
