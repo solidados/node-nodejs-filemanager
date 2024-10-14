@@ -1,25 +1,46 @@
 import { EOL } from "node:os";
+import {
+  formatInverseColor,
+  formatPathColor,
+  formatErrorColor,
+  formatSuccessColor,
+  formatWarningColor,
+} from "../helpers/index.js";
 
 const messages = {
-  failed: (msg) => console.log(`Operation failed ${msg}${EOL}`),
-  fileCreated: (file) => console.log(`File ${file} created successfully${EOL}`),
-  fileExist: () => console.log(`File already exist${EOL}`),
+  failed: (msg) =>
+    console.log(`${formatErrorColor(`Operation failed:`)} ${msg}${EOL}`),
+  fileCreated: (file) =>
+    console.log(
+      `${formatSuccessColor(`File`)} ${formatPathColor(file)} ${formatSuccessColor(`created successfully`)}${EOL}`,
+    ),
+  fileExist: () =>
+    console.log(`${formatWarningColor(`File already exist`)}${EOL}`),
   fileProcessed: (operation, file) =>
-    console.log(`${operation} on ${file} was successful${EOL}`),
-  fileRenamed: (file) => console.log(`File ${file} renamed successfully${EOL}`),
+    console.log(
+      `${formatSuccessColor(operation)} on ${formatPathColor(file)} was successful${EOL}`,
+    ),
+  fileRenamed: (file) =>
+    console.log(
+      `${formatSuccessColor(`File`)} ${formatPathColor(file)} ${formatSuccessColor(`renamed successfully`)}${EOL}`,
+    ),
   goodbye: (username) =>
     console.log(
-      `${EOL}Thank you for using File Manager, ${username}, goodbye!`,
+      `${EOL}Thank you for using File Manager, ${formatInverseColor(username)}, goodbye!`,
     ),
   greeting: (username) =>
-    console.log(`${EOL}Welcome to the File Manager, ${username}!`),
-  invalid: () => console.log(`Invalid command${EOL}`),
-  invalidInput: () => console.log(`Invalid input${EOL}`),
-  location: (dir) => console.log(`You are currently in ${dir}`),
+    console.log(
+      `${EOL}Welcome to the File Manager, ${formatInverseColor(username)}!`,
+    ),
+  invalid: () => console.log(formatErrorColor(`Invalid command`), EOL),
+  invalidInput: () => console.log(formatErrorColor(`Invalid input`), EOL),
+  location: (dir) =>
+    console.log(`${EOL}You are currently in ${formatPathColor(dir)}`),
   rewrite: (fileName) =>
-    `File ${fileName} already exists. Would you like to re-write it? (y/N): `,
-  unable: () => console.log(`Unable to perform command${EOL}`),
-  userOutput: (option) => console.log(`${option}`),
+    `${formatPathColor(fileName)} ${formatWarningColor(`already exists. Would you like to re-write it? (y/N): `)}`,
+  unable: () =>
+    console.log(formatWarningColor(`Unable to perform command`), EOL),
+  userOutput: (option) => console.log(formatSuccessColor(option)),
 };
 
 export default messages;
