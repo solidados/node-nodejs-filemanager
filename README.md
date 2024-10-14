@@ -63,6 +63,20 @@ be displayed `Invalid input`, allowing the user to enter another command.
   current local drive). If the user attempts this, the current working directory remains unchanged.
 
 ---
+
+> **IMPORTANT!**  
+> Hereinafter, for correct and good performance of my application, please use symbol `%` instead of any `space` present in:  
+> - file name
+> - directory name
+> - path  
+> 
+> _Example:_  
+> ```shell
+> cd Desktop/new%folder
+> ```  
+> This will change your location to `/Desktop/new folder`
+
+---
 ### Navigation Commands and Syntax
 #### level up
 - `up` or `..`  
