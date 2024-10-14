@@ -4,6 +4,7 @@ import {
   cat,
   cd,
   cp,
+  hash,
   osInfo,
   ls,
   mv,
@@ -40,6 +41,8 @@ const commands = {
     ),
   os: async (file) =>
     osInfo(currentDir, file).catch((err) => console.error(err.message)),
+  hash: async (file) =>
+    hash(currentDir, file).catch((err) => console.error(err.message)),
 };
 
 export default commands;
