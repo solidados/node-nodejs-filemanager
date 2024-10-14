@@ -1,0 +1,12 @@
+export { default as cd } from "./cd.command.js";
+export { default as ls } from "./ls.command.js";
+export { default as cat } from "./cat.command.js";
+export { default as add } from "./add.command.js";
+export { default as rn } from "./rn.command.js";
+export { default as cp } from "./cp.command.js";
+export { default as mv } from "./mv.command.js";
+export { default as rmCommand } from "./rm.command.js";
+export { default as osInfo } from "./os.commands.js";
+export { default as hash } from "./hash.command.js";
+export { default as compress } from "./compress.command.js";
+export { default as decompress } from "./decompress.command.js";
