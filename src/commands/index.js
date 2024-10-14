@@ -9,3 +9,4 @@ export { default as rmCommand } from "./rm.command.js";
 export { default as osInfo } from "./os.commands.js";
 export { default as hash } from "./hash.command.js";
 export { default as compress } from "./compress.command.js";
+export { default as decompress } from "./decompress.command.js";

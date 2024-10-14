@@ -11,6 +11,7 @@ import {
   rmCommand,
   rn,
   compress,
+  decompress,
 } from "../commands/index.js";
 
 let currentDir = getHomeDir();
@@ -46,6 +47,10 @@ const commands = {
     hash(currentDir, file).catch((err) => console.error(err.message)),
   compress: async (filePath, destPath) =>
     compress(currentDir, filePath, destPath).catch((err) =>
+      console.error(err.message),
+    ),
+  decompress: async (filePath, destPath) =>
+    decompress(currentDir, filePath, destPath).catch((err) =>
       console.error(err.message),
     ),
 };
