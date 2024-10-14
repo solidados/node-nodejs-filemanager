@@ -18,7 +18,7 @@ const messages = {
     console.log(`${formatWarningColor(`File already exist`)}${EOL}`),
   fileProcessed: (operation, file) =>
     console.log(
-      `${formatSuccessColor(operation)} on ${formatPathColor(file)} was successful${EOL}`,
+      `${formatSuccessColor(`${operation} on`)} ${formatPathColor(file)} ${formatSuccessColor(`was successful`)}`,
     ),
   fileRenamed: (file) =>
     console.log(
