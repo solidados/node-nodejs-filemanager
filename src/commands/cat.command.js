@@ -1,6 +1,6 @@
 import { stat, readFile } from "node:fs/promises";
 import { EOL } from "node:os";
-import { __absolute, messages } from "../helpers/index.js";
+import { __absolute, messages, pathParser } from "../helpers/index.js";
 
 const wrapText = (text, width) => {
   const regex = new RegExp(`(.{1,${width}})(\\s|$)|(.{1,${width}})`, "g");
@@ -8,9 +8,12 @@ const wrapText = (text, width) => {
 };
 
 const cat = async (dir, file) => {
-  if (!file) return messages.invalidInput();
+  const [parsedDir] = pathParser(dir);
+  const [parsedFile] = pathParser(file);
 
-  const filePath = __absolute(dir, file);
+  if (!parsedFile) return messages.invalidInput();
+
+  const filePath = __absolute(parsedDir, parsedFile);
 
   try {
     const stats = await stat(filePath);
@@ -24,7 +27,7 @@ const cat = async (dir, file) => {
   } catch (error) {
     messages.failed(error.message);
   } finally {
-    messages.location(dir);
+    messages.location(parsedDir);
   }
 };
 
