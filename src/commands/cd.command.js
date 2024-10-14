@@ -1,6 +1,12 @@
 import { homedir as getHomeDir } from "node:os";
 import { dirname } from "node:path";
-import { __absolute, isPathExist, messages } from "../helpers/index.js";
+import {
+  __absolute,
+  isPathExist,
+  messages,
+  formatPathColor,
+  formatErrorColor,
+} from "../helpers/index.js";
 
 let currentDir = getHomeDir();
 
@@ -27,10 +33,14 @@ const cd = async (dir) => {
       currentDir = newPath;
       messages.location(currentDir);
     } else {
-      messages.failed(`: ${newPath} does not exist.`);
+      messages.failed(
+        `${formatPathColor(newPath)} ${formatErrorColor(`does not exist.`)}`,
+      );
     }
   } catch (error) {
-    messages.failed(`: ${newPath} does not exist.`);
+    messages.failed(
+      `${formatPathColor(newPath)} ${formatErrorColor(`does not exist.`)}`,
+    );
   }
 
   return currentDir;
