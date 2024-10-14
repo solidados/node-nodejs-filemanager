@@ -1,6 +1,11 @@
 import { EOL, cpus, userInfo, arch } from "node:os";
 import { constants } from "../constants/index.js";
-import { messages } from "../helpers/index.js";
+import {
+  formatSuccessColor,
+  formatWarningColor,
+  messages,
+  pathParser,
+} from "../helpers/index.js";
 
 const osOptions = {
   "--EOL": getEOL,
@@ -20,7 +25,9 @@ function getCPUS() {
     Model: cpu.model,
     "Clock Rate (GHz)": (cpu.speed / 1000).toFixed(2),
   }));
-  console.log(`Overall amount of CPUs: ${cpuInfo.length}`);
+  console.log(
+    `${formatSuccessColor(`Overall amount of CPUs:`)} ${formatWarningColor(cpuInfo.length)}`,
+  );
   console.table(cpuInfo);
 }
 
@@ -42,8 +49,10 @@ function getArchitecture() {
 }
 
 async function osInfo(currentDir, file) {
+  const [parsedFile] = pathParser(file);
+
   try {
-    const operation = osOptions[file];
+    const operation = osOptions[parsedFile];
     if (operation) {
       await operation();
       messages.location(currentDir);
