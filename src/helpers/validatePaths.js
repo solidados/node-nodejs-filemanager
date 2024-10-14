@@ -1,7 +1,11 @@
 import { stat } from "node:fs/promises";
 import { isPathExist, messages } from "./index.js";
+import pathParser from "./pathParser.js";
 
-export const validatePaths = async (srcPath, destDir) => {
+export const validatePaths = async (srcPathStr, destDirStr) => {
+  const [srcPath] = pathParser(srcPathStr);
+  const [destDir] = pathParser(destDirStr);
+
   const srcExists = await isPathExist(srcPath);
   if (!srcExists) {
     messages.failed(`Source file ${srcPath} does not exist.`);
